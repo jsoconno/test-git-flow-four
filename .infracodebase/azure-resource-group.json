@@ -1,0 +1,11 @@
+{
+  "nodes": [
+    {
+      "id": "rg",
+      "label": "Resource Group",
+      "subtitle": "rg-example",
+      "icon": "/icons/azure/management/resource-group.png"
+    }
+  ],
+  "edges": []
+}
