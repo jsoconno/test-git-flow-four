@@ -52,3 +52,13 @@ output "private_dns_zone_id" {
   description = "The ID of the Key Vault private DNS zone"
   value       = azurerm_private_dns_zone.keyvault.id
 }
+
+output "log_analytics_workspace_id" {
+  description = "The ID of the Log Analytics workspace for security monitoring"
+  value       = azurerm_log_analytics_workspace.this.id
+}
+
+output "log_analytics_workspace_name" {
+  description = "The name of the Log Analytics workspace"
+  value       = azurerm_log_analytics_workspace.this.name
+}
