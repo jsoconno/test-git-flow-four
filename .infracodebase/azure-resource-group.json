@@ -5,7 +5,20 @@
       "label": "Resource Group",
       "subtitle": "rg-example",
       "icon": "/icons/azure/management/resource-group.png"
+    },
+    {
+      "id": "kv",
+      "label": "Key Vault",
+      "subtitle": "kv-example",
+      "icon": "/icons/azure/security/key-vault.png"
     }
   ],
-  "edges": []
+  "edges": [
+    {
+      "id": "rg-to-kv",
+      "source": "rg",
+      "target": "kv",
+      "label": "contains"
+    }
+  ]
 }

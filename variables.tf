@@ -10,6 +10,12 @@ variable "location" {
   default     = "East US"
 }
 
+variable "key_vault_name" {
+  type        = string
+  description = "The name of the key vault"
+  default     = "kv-example"
+}
+
 variable "tags" {
   type        = map(string)
   description = "A map of tags to assign to the resource group"
