@@ -16,6 +16,24 @@ variable "key_vault_name" {
   default     = "kv-example"
 }
 
+variable "vnet_name" {
+  type        = string
+  description = "The name of the virtual network"
+  default     = "vnet-example"
+}
+
+variable "vnet_address_space" {
+  type        = list(string)
+  description = "The address space for the virtual network"
+  default     = ["10.0.0.0/16"]
+}
+
+variable "subnet_address_prefixes" {
+  type        = list(string)
+  description = "The address prefixes for the subnet"
+  default     = ["10.0.1.0/24"]
+}
+
 variable "tags" {
   type        = map(string)
   description = "A map of tags to assign to the resource group"

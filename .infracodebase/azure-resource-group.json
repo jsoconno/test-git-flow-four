@@ -11,13 +11,67 @@
       "label": "Key Vault",
       "subtitle": "kv-example",
       "icon": "/icons/azure/security/key-vault.png"
+    },
+    {
+      "id": "vnet",
+      "label": "Virtual Network",
+      "subtitle": "vnet-example",
+      "icon": "/icons/azure/networking/virtual-network.png"
+    },
+    {
+      "id": "subnet",
+      "label": "Subnet",
+      "subtitle": "snet-private-endpoints",
+      "icon": "/icons/azure/networking/subnet.png"
+    },
+    {
+      "id": "pe",
+      "label": "Private Endpoint",
+      "subtitle": "pe-keyvault",
+      "icon": "/icons/azure/networking/private-endpoint.png"
+    },
+    {
+      "id": "dns",
+      "label": "Private DNS Zone",
+      "subtitle": "privatelink.vaultcore.azure.net",
+      "icon": "/icons/azure/networking/dns-zone-(private).png"
     }
   ],
   "edges": [
     {
-      "id": "rg-to-kv",
+      "id": "rg-to-vnet",
       "source": "rg",
+      "target": "vnet",
+      "label": "contains"
+    },
+    {
+      "id": "vnet-to-subnet",
+      "source": "vnet",
+      "target": "subnet",
+      "label": "contains"
+    },
+    {
+      "id": "subnet-to-pe",
+      "source": "subnet",
+      "target": "pe",
+      "label": "hosts"
+    },
+    {
+      "id": "pe-to-kv",
+      "source": "pe",
       "target": "kv",
+      "label": "secures"
+    },
+    {
+      "id": "dns-to-pe",
+      "source": "dns",
+      "target": "pe",
+      "label": "resolves"
+    },
+    {
+      "id": "rg-to-dns",
+      "source": "rg",
+      "target": "dns",
       "label": "contains"
     }
   ]
