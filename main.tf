@@ -30,22 +30,26 @@ resource "azurerm_key_vault" "this" {
   resource_group_name        = azurerm_resource_group.this.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   sku_name                   = "standard"
-  soft_delete_retention_days = 7
-  purge_protection_enabled   = false
+  soft_delete_retention_days = 90
+  purge_protection_enabled   = true
 
-  # Enable RBAC for access management
+  # Enable RBAC for access management (required for security compliance)
   enable_rbac_authorization = true
 
   # Disable public network access to force private endpoint usage
   public_network_access_enabled = false
 
-  # Network ACLs to restrict access
+  # Network ACLs to restrict access - default deny with Azure Services bypass
   network_acls {
     bypass         = "AzureServices"
     default_action = "Deny"
   }
 
-  tags = var.tags
+  # Enable diagnostic settings for security monitoring
+  tags = merge(var.tags, {
+    Security = "PrivateEndpoint"
+    Compliance = "AzureSecurityBenchmark"
+  })
 }
 
 # Generate random suffix for globally unique key vault name
@@ -90,6 +94,36 @@ resource "azurerm_private_endpoint" "keyvault" {
   private_dns_zone_group {
     name                 = "keyvault-dns-zone-group"
     private_dns_zone_ids = [azurerm_private_dns_zone.keyvault.id]
+  }
+}
+
+# Log Analytics Workspace for security monitoring
+resource "azurerm_log_analytics_workspace" "this" {
+  name                = "law-${var.key_vault_name}-${random_string.suffix.result}"
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
+  sku                 = "PerGB2018"
+  retention_in_days   = var.log_retention_days
+  tags                = var.tags
+}
+
+# Diagnostic settings for Key Vault logging
+resource "azurerm_monitor_diagnostic_setting" "keyvault" {
+  name                       = "diag-${azurerm_key_vault.this.name}"
+  target_resource_id         = azurerm_key_vault.this.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.this.id
+
+  enabled_log {
+    category = "AuditEvent"
+  }
+
+  enabled_log {
+    category = "AzurePolicyEvaluationDetails"
+  }
+
+  metric {
+    category = "AllMetrics"
+    enabled  = true
   }
 }
 

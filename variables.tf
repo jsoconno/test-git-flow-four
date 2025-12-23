@@ -34,6 +34,12 @@ variable "subnet_address_prefixes" {
   default     = ["10.0.1.0/24"]
 }
 
+variable "log_retention_days" {
+  type        = number
+  description = "Log retention period in days for compliance"
+  default     = 90
+}
+
 variable "tags" {
   type        = map(string)
   description = "A map of tags to assign to the resource group"

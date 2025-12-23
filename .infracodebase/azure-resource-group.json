@@ -35,6 +35,12 @@
       "label": "Private DNS Zone",
       "subtitle": "privatelink.vaultcore.azure.net",
       "icon": "/icons/azure/networking/dns-zone-(private).png"
+    },
+    {
+      "id": "law",
+      "label": "Log Analytics Workspace",
+      "subtitle": "law-keyvault",
+      "icon": "/icons/azure/management/log-analytics-workspace.png"
     }
   ],
   "edges": [
@@ -73,6 +79,18 @@
       "source": "rg",
       "target": "dns",
       "label": "contains"
+    },
+    {
+      "id": "rg-to-law",
+      "source": "rg",
+      "target": "law",
+      "label": "contains"
+    },
+    {
+      "id": "kv-to-law",
+      "source": "kv",
+      "target": "law",
+      "label": "logs to"
     }
   ]
 }
